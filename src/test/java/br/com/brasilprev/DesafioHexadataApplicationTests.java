@@ -12,7 +12,7 @@ import org.springframework.test.context.jdbc.SqlConfig.TransactionMode;
 import org.springframework.test.context.jdbc.SqlGroup;
 
 import br.com.brasilprev.model.Customer;
-import br.com.brasilprev.service.CustomerReadService;
+import br.com.brasilprev.service.facades.CustomerFacade;
 
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
@@ -22,12 +22,11 @@ import br.com.brasilprev.service.CustomerReadService;
 class DesafioHexadataApplicationTests {
 
 	@Autowired
-	private CustomerReadService customerReadService;
+	private CustomerFacade customerFacade;
 
 	@Test
 	void whenGetCustomerByIdAndExists_ThenOk() {
-		Customer customer = this.customerReadService.getById(1L).orElseGet(null);
+		Customer customer = this.customerFacade.getById(1L).orElseGet(null);
 		Assertions.assertEquals("12345678901", customer.getCpf());
 	}
-
 }
