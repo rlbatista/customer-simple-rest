@@ -53,7 +53,7 @@ class DesafioHexadataApplicationTests {
 		return
 			Customer
 				.builder()
-					.cpf("12345678998")
+					.cpf("14631451017")
 					.name("New Customer")
 					.address(Address
 					         .builder()
