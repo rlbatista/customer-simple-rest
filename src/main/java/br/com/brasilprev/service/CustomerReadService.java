@@ -19,7 +19,7 @@ public class CustomerReadService {
 		this.customerRepo = customerRepo;
 	}
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	public Optional<Customer> getById(Long id) {
 		return this.customerRepo.findById(id);
 	}
