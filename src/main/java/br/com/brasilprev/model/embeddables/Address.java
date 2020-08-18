@@ -31,19 +31,19 @@ public class Address {
 	@Column
 	@Size(max = 50)
 	private String complement;
-	
-	@Column
-	@Size(min = 2, max = 30)
-	@NotBlank
-	private String city;
-	
+
 	@Column
 	@Size(min = 2, max = 30)
 	@NotBlank
 	private String neighborhood;
 	
 	@Column
-	@Size(min = 2, max = 25)
+	@Size(min = 2, max = 30)
+	@NotBlank
+	private String city;
+	
+	@Column(name = "state_code")
+	@Size(min = 2, max = 2)
 	@NotBlank
 	private String state;
 }
