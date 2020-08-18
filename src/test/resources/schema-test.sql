@@ -14,4 +14,4 @@ create table customers
 );
 
 alter table customers add constraint uk_customer_cpf unique (cpf);
-create sequence sq_customer start 1 increment 1;
+create sequence sq_customer start 1000 increment 1;
