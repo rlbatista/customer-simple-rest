@@ -29,6 +29,7 @@ public class Address {
 	private String number;
 	
 	@Column
+	@Size(max = 50)
 	private String complement;
 	
 	@Column

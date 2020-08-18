@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "customers", uniqueConstraints = @UniqueConstraint(columnNames = { "cnpj" }, name = "uk_customer_cnpj"))
+@Table(name = "customers", uniqueConstraints = @UniqueConstraint(columnNames = { "cpf" }, name = "uk_customer_cpf"))
 @DynamicUpdate(true)
 @Data
 @Builder
