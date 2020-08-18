@@ -8,18 +8,15 @@ import org.springframework.stereotype.Component;
 import br.com.brasilprev.model.Customer;
 import br.com.brasilprev.service.CustomerReadService;
 import br.com.brasilprev.service.CustomerSaveService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CustomerFacade {
 	
-	private CustomerReadService customerReadService;
-	private CustomerSaveService customerSaveService;
-
-	@Autowired
-	public CustomerFacade(CustomerReadService customerReadService, CustomerSaveService customerSaveService) {
-		this.customerReadService = customerReadService;
-		this.customerSaveService = customerSaveService;
-	}
+	private final @NonNull CustomerReadService customerReadService;
+	private final @NonNull CustomerSaveService customerSaveService;
 
 	public Optional<Customer> getById(Long id) {
 		return this.customerReadService.getById(id);

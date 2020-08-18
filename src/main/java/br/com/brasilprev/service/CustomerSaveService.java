@@ -6,16 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.brasilprev.dao.CustomerRepository;
 import br.com.brasilprev.model.Customer;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CustomerSaveService {
 
-	private CustomerRepository customerRepo;
-	
-	@Autowired
-	public CustomerSaveService(CustomerRepository customerRepo) {
-		this.customerRepo = customerRepo;
-	}
+	private final @NonNull CustomerRepository customerRepo;
 	
 	@Transactional
 	public Customer save(Customer newCustomer) {
