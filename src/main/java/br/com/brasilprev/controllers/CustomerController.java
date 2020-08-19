@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -89,6 +90,35 @@ public class CustomerController {
 		Customer toSave = this.customerMapper.customerRequestToCustomerEntity(newCustomer);
 		Customer saved = this.customerFacade.save(toSave);
 		CustomerResponse toReturn = this.customerMapper.customerEntityToCustomerResponse(saved);
+		toReturn.add(linkTo(methodOn(CustomerController.class).doGetCustomer(toReturn.getId())).withSelfRel());
+		return toReturn;
+	}
+	
+	@ApiOperation(value = "Updates a customer", notes = "Updates a customer with informed data")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Customer updated")
+		,@ApiResponse(code = 400, message = "When there are validations errors or customer not exists")
+		,@ApiResponse(code = 409, message = "When CPF customer belongs to another customer")
+	})
+	@PutMapping("{id}")
+	public CustomerResponse doUpdateCustomer(	@ApiParam(	value = "Customer identification"
+															,type = "java.lang.Long"
+															,example = "1"
+															,required = true)
+	                                         	@PathVariable("id")
+												Long id
+												
+												,@ApiParam(	value = "Customer data"
+															,type = "br.com.brasilprev.rest.dto.CustomerRequest"
+															,required = true)
+												@RequestBody
+												CustomerRequest customerData) {
+		
+		Customer updateMe = this.customerMapper.customerRequestToCustomerEntity(customerData);
+		updateMe.setId(id);
+		Customer updated = this.customerFacade.update(updateMe);
+		
+		CustomerResponse toReturn = this.customerMapper.customerEntityToCustomerResponse(updated);
 		toReturn.add(linkTo(methodOn(CustomerController.class).doGetCustomer(toReturn.getId())).withSelfRel());
 		return toReturn;
 	}
