@@ -24,4 +24,8 @@ public class CustomerReadService {
 		
 		return this.customerRepo.findById(id);
 	}
+
+	public Optional<Customer> findByCpf(String cpf) {
+		return this.customerRepo.findByCpf(cpf);
+	}
 }

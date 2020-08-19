@@ -1,5 +1,7 @@
 package br.com.brasilprev;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -64,6 +66,15 @@ public class CustomerSaveTests extends AbstractCustomerTests {
 
 		Customer savedCustomer = super.customerFacade.getById(newCustomer.getId()).get();
 		Assertions.assertEquals("60341740071", savedCustomer.getCpf(), "New customer with formatted CPF wasn't save");
+	}
+	
+	@Test
+	void whenSaveCustomerWithInvalidFields_ThenThrowValidationExceptions() {
+		Customer filledButInvalidCustomer = super.createInvalidCustomer();
+		
+		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+			super.customerFacade.save(filledButInvalidCustomer);
+		});
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.brasilprev.exceptions.CustomerAlreadyRegisteredException;
 import br.com.brasilprev.model.Customer;
 import br.com.brasilprev.service.CustomerReadService;
 import br.com.brasilprev.service.CustomerSaveService;
@@ -23,6 +24,10 @@ public class CustomerFacade {
 	}
 
 	public Customer save(Customer newCustomer) {
+		if(newCustomer.getCpf() != null) {
+			newCustomer.setCpf(newCustomer.getCpf().replaceAll("\\D", ""));
+			this.customerReadService.findByCpf(newCustomer.getCpf()).ifPresent(CustomerAlreadyRegisteredException::throwInstance);
+		}
 		return this.customerSaveService.save(newCustomer);
 	}
 }

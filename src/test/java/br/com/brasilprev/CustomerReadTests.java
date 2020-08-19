@@ -12,7 +12,7 @@ public class CustomerReadTests extends AbstractCustomerTests {
 	@Test
 	void whenGetCustomerByIdAndExists_ThenOk() {
 		Customer customer = super.customerFacade.getById(CUSTOMER_ID_ONE).orElseGet(null);
-		Assertions.assertEquals("12345678901", customer.getCpf(), "Customer was not found");
+		Assertions.assertEquals(CPF_REGISTERED_ON_TEST_SQL_FILE, customer.getCpf(), "Customer was not found");
 	}
 
 	@Test

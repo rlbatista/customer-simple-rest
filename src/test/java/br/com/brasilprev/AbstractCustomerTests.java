@@ -45,5 +45,22 @@ abstract class AbstractCustomerTests {
 					         .build())
 				.build();
 	}
+	
+	protected Customer createInvalidCustomer() {
+		return
+			Customer
+			.builder()
+			.cpf("22222222209")
+			.name("Customer with lenght name greater than fifty chars!!!")
+			.address(Address
+			         .builder()
+			         .street("This street name has much more than sixty chars, so this is a invalid one")
+			         .number("Number more than ten")
+			         .neighborhood("Neighborhood cannot have more than thirty chars, mas this one has")
+			         .city("City name with more than thirty chars")
+			         .state("Just more than two")
+			         .build())
+			.build();
+	}
 	// @formatter:on
 }
