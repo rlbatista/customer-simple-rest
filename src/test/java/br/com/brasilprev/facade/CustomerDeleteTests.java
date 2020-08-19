@@ -1,4 +1,4 @@
-package br.com.brasilprev;
+package br.com.brasilprev.facade;
 
 import java.util.Optional;
 
