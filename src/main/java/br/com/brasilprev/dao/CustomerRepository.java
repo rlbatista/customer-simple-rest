@@ -11,4 +11,5 @@ import br.com.brasilprev.model.Customer;
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
 	
 	Optional<Customer> findByCpf(String cpf);
+	boolean existsByCpfAndIdNot(String cnpj, Long id);
 }

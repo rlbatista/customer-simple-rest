@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.brasilprev.dao.CustomerRepository;
+import br.com.brasilprev.exceptions.CustomerAlreadyRegisteredException;
 import br.com.brasilprev.exceptions.CustomerNotFoundException;
 import br.com.brasilprev.model.Customer;
 import lombok.NonNull;
@@ -29,12 +30,23 @@ public class CustomerUpdateService {
 	private final @NonNull Validator validator;
 	
 	@Transactional
-	public Customer update(Customer existingCustomer) {
-		Objects.requireNonNull(existingCustomer, "Customer to edit can't be null");
-		Customer originalCustomer = this.customerRepo.findById(existingCustomer.getId()).orElseThrow(CustomerNotFoundException::new);
-		BeanUtils.copyProperties(existingCustomer, originalCustomer, getNullPropertyNames(existingCustomer));
-		this.checkValidationsForCustomer(originalCustomer);
-		return this.customerRepo.save(originalCustomer);
+	public Customer update(Long idCustomerToEdit, Customer customerToUpdate) {
+		Objects.requireNonNull(idCustomerToEdit, "Customer identification to edit can't be null");
+		Objects.requireNonNull(customerToUpdate, "Customer data to update can't be null");
+		
+		Customer originalCustomer = this.customerRepo.findById(idCustomerToEdit).orElseThrow(CustomerNotFoundException::new);
+		Customer copyOfOriginal = this.createCopyToAvoidHibernateUpdateDuringValidation(originalCustomer);
+		
+		customerToUpdate.setId(null);
+		
+		BeanUtils.copyProperties(customerToUpdate, copyOfOriginal, getNullPropertyNames(customerToUpdate));
+		this.checkValidationsForCustomer(copyOfOriginal);
+		
+		return this.customerRepo.save(copyOfOriginal);
+	}
+
+	private Customer createCopyToAvoidHibernateUpdateDuringValidation(Customer originalCustomer) {
+		return originalCustomer.toBuilder().build();
 	}
 	
 	private static String[] getNullPropertyNames(Object source) {
@@ -48,6 +60,11 @@ public class CustomerUpdateService {
 	}
 	
 	private void checkValidationsForCustomer(Customer validateMe) {
+		if(this.customerRepo.existsByCpfAndIdNot(validateMe.getCpf(), validateMe.getId())) {
+			Customer customerAlreadyRegistered = this.customerRepo.findById(validateMe.getId()).get();
+			throw new CustomerAlreadyRegisteredException(customerAlreadyRegistered);
+		}
+		
 		Set<ConstraintViolation<Customer>> violations = this.validator.validate(validateMe);
 		if(violations.size() > 0) {
 			StringBuilder builder = new StringBuilder();

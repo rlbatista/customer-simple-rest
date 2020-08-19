@@ -37,7 +37,7 @@ public class CustomerSaveTests extends AbstractCustomerTests {
 	@Test
 	void whenSaveRegisteredCustomer_ThenThrowSpecificException() {
 		Customer registeredCustomer = super.customerFacade.save(super.createValidCustomer());
-		registeredCustomer.setCpf(CPF_REGISTERED_ON_TEST_SQL_FILE);
+		registeredCustomer.setCpf(CPF_REGISTERED_1);
 		
 		CustomerAlreadyRegisteredException exception =
 			Assertions.assertThrows(CustomerAlreadyRegisteredException.class, () -> {

@@ -115,8 +115,7 @@ public class CustomerController {
 												CustomerRequest customerData) {
 		
 		Customer updateMe = this.customerMapper.customerRequestToCustomerEntity(customerData);
-		updateMe.setId(id);
-		Customer updated = this.customerFacade.update(updateMe);
+		Customer updated = this.customerFacade.update(id, updateMe);
 		
 		CustomerResponse toReturn = this.customerMapper.customerEntityToCustomerResponse(updated);
 		toReturn.add(linkTo(methodOn(CustomerController.class).doGetCustomer(toReturn.getId())).withSelfRel());

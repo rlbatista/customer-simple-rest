@@ -37,8 +37,8 @@ public class CustomerFacade {
 		return this.customerSaveService.save(newCustomer);
 	}
 
-	public Customer update(Customer toUpdate) {
-		return this.customerUpdateService.update(toUpdate);
+	public Customer update(Long idCustomerToUpdate, Customer customerData) {
+		return this.customerUpdateService.update(idCustomerToUpdate, customerData);
 	}
 
 	public void deleteCustomerById(Long customerIdToDelete) {
