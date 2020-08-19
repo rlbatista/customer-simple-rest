@@ -3,9 +3,12 @@ package br.com.brasilprev.controllers;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +39,7 @@ public class CustomerController {
 		@ApiResponse(code = 200, message = "Customer found")
 		,@ApiResponse(code = 404, message = "When not found")
 	})
-	@GetMapping("{id}")
+	@GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CustomerResponse doGetCustomer(@ApiParam(value = "Customer identification",
 													type = "java.lang.Long",
 													example = "1",
@@ -51,5 +54,17 @@ public class CustomerController {
 		customerResponse.add(linkTo(methodOn(CustomerController.class).doGetCustomer(customerResponse.getId())).withSelfRel());
 		
 		return customerResponse;
+	}
+
+	@ApiOperation(value = "List all customers", notes = "Gel all registered customers with their individual links")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Customers found")
+	})
+	@GetMapping
+	public List<CustomerResponse> doGetAllCustomers() {
+		List<Customer> customers = this.customerFacade.getAll();
+		List<CustomerResponse> responseCustomers = customers.stream().map(this.customerMapper::customerEntityToCustomerResponse).collect(Collectors.toList());
+		responseCustomers.forEach(rc -> rc.add(linkTo(methodOn(CustomerController.class).doGetCustomer(rc.getId())).withSelfRel()));
+		return responseCustomers;
 	}
 }
