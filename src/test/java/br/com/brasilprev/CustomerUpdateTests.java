@@ -17,4 +17,11 @@ public class CustomerUpdateTests extends AbstractCustomerTests {
 		Customer updatedCustomer = super.customerFacade.getById(CUSTOMER_ID_ONE).get();
 		Assertions.assertEquals(newName, updatedCustomer.getName());
 	}
+	
+	@Test
+	void whenUpdateNullCustomer_ThenThrowsNPE() {
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			this.customerFacade.update(null);
+		});
+	}
 }
