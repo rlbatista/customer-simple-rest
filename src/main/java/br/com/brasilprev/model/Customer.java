@@ -12,7 +12,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -26,7 +25,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "customers", uniqueConstraints = @UniqueConstraint(columnNames = { "cpf" }, name = "uk_customer_cpf"))
-@DynamicUpdate(true)
 @Data
 @Builder
 @AllArgsConstructor
