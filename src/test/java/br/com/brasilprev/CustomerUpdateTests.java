@@ -1,5 +1,7 @@
 package br.com.brasilprev;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +24,23 @@ public class CustomerUpdateTests extends AbstractCustomerTests {
 	void whenUpdateNullCustomer_ThenThrowsNPE() {
 		Assertions.assertThrows(NullPointerException.class, () -> {
 			this.customerFacade.update(null);
+		});
+	}
+	
+	@Test
+	void whenUpdateCustomerWithIvalidData_ThenThrowsException() {
+		Customer invalidCustomerData = super.createInvalidCustomer();
+		Customer toUpdate =
+			Customer
+				.builder()
+					.id(CUSTOMER_ID_ONE)
+					
+					.name(invalidCustomerData.getName())
+					.address(invalidCustomerData.getAddress())
+				.build();
+		
+		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+			this.customerFacade.update(toUpdate);
 		});
 	}
 }
