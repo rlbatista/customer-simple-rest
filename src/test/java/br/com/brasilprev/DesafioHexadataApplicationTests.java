@@ -27,6 +27,7 @@ class DesafioHexadataApplicationTests {
 	private static final long SEQUENCE_START_VALUE = 1000L;
 	private static final Long CUSTOMER_ID_ONE = 1L;
 	private static final Long CUSTOMER_ID_NOT_EXISTS = -1L;
+	
 	@Autowired
 	private CustomerFacade customerFacade;
 
@@ -67,6 +68,13 @@ class DesafioHexadataApplicationTests {
 		});
 	}
 
+	@Test
+	void whenSaveNullCustomer_ThenThrowsNPE() {
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			this.customerFacade.save(null);
+		}, "Can method save null customer ???");
+	}
+	
 	@Test
 	void whenSaveInvalidCustomer_ThenThrowsException() {
 		Customer invalidCustomer = this.createCustomer();
