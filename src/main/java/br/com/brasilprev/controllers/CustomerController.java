@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -120,5 +121,20 @@ public class CustomerController {
 		CustomerResponse toReturn = this.customerMapper.customerEntityToCustomerResponse(updated);
 		toReturn.add(linkTo(methodOn(CustomerController.class).doGetCustomer(toReturn.getId())).withSelfRel());
 		return toReturn;
+	}
+	
+	@ApiOperation(value = "Excludes a customer", notes = "Excludes a single customer represented by your identification")
+	@ApiResponses(value = {
+		@ApiResponse(code = 204, message = "Customer excluded with success")
+		,@ApiResponse(code = 404, message = "When not found")
+	})
+	@DeleteMapping("{id}")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void doDeleteCustomer(	@ApiParam(	value = "Customer identification"
+												,type = "java.lang.Long"
+												,example = "1"
+												,required = true)
+									@PathVariable("id") Long id) {
+		this.customerFacade.deleteCustomerById(id);
 	}
 }
