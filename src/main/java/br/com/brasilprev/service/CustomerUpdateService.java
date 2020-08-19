@@ -33,7 +33,7 @@ public class CustomerUpdateService {
 		Objects.requireNonNull(existingCustomer, "Customer to edit can't be null");
 		Customer originalCustomer = this.customerRepo.findById(existingCustomer.getId()).orElseThrow(CustomerNotFoundException::new);
 		BeanUtils.copyProperties(existingCustomer, originalCustomer, getNullPropertyNames(existingCustomer));
-		this.checkValidationsForCustomer(existingCustomer);
+		this.checkValidationsForCustomer(originalCustomer);
 		return this.customerRepo.save(originalCustomer);
 	}
 	
