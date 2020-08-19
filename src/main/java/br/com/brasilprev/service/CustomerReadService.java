@@ -1,7 +1,11 @@
 package br.com.brasilprev.service;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,5 +31,14 @@ public class CustomerReadService {
 
 	public Optional<Customer> findByCpf(String cpf) {
 		return this.customerRepo.findByCpf(cpf);
+	}
+
+	public List<Customer> getAll() {
+		Iterable<Customer> itCustomers = this.customerRepo.findAll();
+		return
+			StreamSupport
+				.stream(itCustomers.spliterator(), false)
+				.sorted(Comparator.comparing(Customer::getName))
+				.collect(Collectors.toList());
 	}
 }

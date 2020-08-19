@@ -1,5 +1,6 @@
 package br.com.brasilprev.service.facades;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -44,5 +45,9 @@ public class CustomerFacade {
 		Objects.requireNonNull(customerIdToDelete, "Customer ID is mandatory for delete");
 		
 		this.customerDeleteService.deleteById(customerIdToDelete);
+	}
+
+	public List<Customer> getAll() {
+		return this.customerReadService.getAll();
 	}
 }
