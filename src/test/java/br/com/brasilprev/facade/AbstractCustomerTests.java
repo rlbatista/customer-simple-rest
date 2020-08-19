@@ -19,7 +19,7 @@ abstract class AbstractCustomerTests {
 	protected static final Long SEQUENCE_START_VALUE = 1000L;
 	protected static final Long CUSTOMER_ID_ONE = 1L;
 	protected static final Long CUSTOMER_ID_NOT_EXISTS = -1L;
-	protected static final String CPF_REGISTERED_1 = "20455988021";
+	protected static final String CPF_REGISTERED_1 = "89150386492";
 	protected static final String CPF_REGISTERED_4 = "05728945899";
 	
 	@Autowired

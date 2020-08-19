@@ -44,7 +44,7 @@ public class CustomerSaveTests extends AbstractCustomerTests {
 				super.customerFacade.save(registeredCustomer);
 			}, "Shouldn't save duplicated CPF");
 		
-		Assertions.assertEquals("Fulano do teste", exception.getCustomer().getName(), "Is duplicated customer wrong ?");
+		Assertions.assertEquals("Cauã Nicolas Thomas Monteiro", exception.getCustomer().getName(), "Is duplicated customer wrong ?");
 	}
 	
 	@Test

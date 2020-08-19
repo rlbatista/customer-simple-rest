@@ -32,6 +32,6 @@ public class CustomerReadTests extends AbstractCustomerTests {
 	@Test
 	void whenGetAllCustomers_ThenOK() {
 		List<Customer> customers = super.customerFacade.getAll();
-		Assertions.assertEquals(5, customers.size());
+		Assertions.assertEquals(4, customers.size());
 	}
 }
