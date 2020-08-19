@@ -1,5 +1,6 @@
 package br.com.brasilprev.service.facades;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.brasilprev.exceptions.CustomerAlreadyRegisteredException;
 import br.com.brasilprev.model.Customer;
+import br.com.brasilprev.service.CustomerDeleteService;
 import br.com.brasilprev.service.CustomerReadService;
 import br.com.brasilprev.service.CustomerSaveService;
 import br.com.brasilprev.service.CustomerUpdateService;
@@ -20,6 +22,7 @@ public class CustomerFacade {
 	private final @NonNull CustomerReadService customerReadService;
 	private final @NonNull CustomerSaveService customerSaveService;
 	private final @NonNull CustomerUpdateService customerUpdateService;
+	private final @NonNull CustomerDeleteService customerDeleteService;
 
 	public Optional<Customer> getById(Long id) {
 		return this.customerReadService.getById(id);
@@ -35,5 +38,11 @@ public class CustomerFacade {
 
 	public Customer update(Customer toUpdate) {
 		return this.customerUpdateService.update(toUpdate);
+	}
+
+	public void deleteCustomerById(Long customerIdToDelete) {
+		Objects.requireNonNull(customerIdToDelete, "Customer ID is mandatory for delete");
+		
+		this.customerDeleteService.deleteById(customerIdToDelete);
 	}
 }
