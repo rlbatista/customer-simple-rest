@@ -1,5 +1,6 @@
 package br.com.brasilprev.service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class CustomerReadService {
 
 	@Transactional(readOnly = true)
 	public Optional<Customer> getById(Long id) {
+		Objects.requireNonNull(id, "Id can't be null");
+		
 		return this.customerRepo.findById(id);
 	}
 }

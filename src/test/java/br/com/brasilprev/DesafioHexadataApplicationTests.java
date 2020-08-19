@@ -41,6 +41,13 @@ class DesafioHexadataApplicationTests {
 		Optional<Customer> optCustomer = this.customerFacade.getById(CUSTOMER_ID_NOT_EXISTS);
 		Assertions.assertFalse(optCustomer.isPresent(), "Was a negative ID found ???");
 	}
+	
+	@Test
+	void whenGetCustomerWithNullId_ThenThrowsNPE() {
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			this.customerFacade.getById(null);
+		}, "How can be possible ? Null id on db");
+	}
 
 	@Test
 	void whenSaveValidCustomer_ThenOk() {
