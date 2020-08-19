@@ -7,15 +7,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.brasilprev.exceptions.CustomerNotFoundException;
 import br.com.brasilprev.model.Customer;
+import br.com.brasilprev.rest.dto.CustomerRequest;
 import br.com.brasilprev.rest.dto.CustomerResponse;
 import br.com.brasilprev.rest.dto.mappers.CustomerMapper;
 import br.com.brasilprev.service.facades.CustomerFacade;
@@ -66,5 +73,23 @@ public class CustomerController {
 		List<CustomerResponse> responseCustomers = customers.stream().map(this.customerMapper::customerEntityToCustomerResponse).collect(Collectors.toList());
 		responseCustomers.forEach(rc -> rc.add(linkTo(methodOn(CustomerController.class).doGetCustomer(rc.getId())).withSelfRel()));
 		return responseCustomers;
+	}
+	
+	@ApiOperation(value = "Creates a customer", notes = "Creates a new customer with informed data")
+	@ApiResponses(value = {
+		@ApiResponse(code = 201, message = "Customer created")
+		,@ApiResponse(code = 400, message = "When there are validations errors")
+		,@ApiResponse(code = 409, message = "When customer being saved already exists")
+	})
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public CustomerResponse doSaveCustomer(@ApiParam(	value = "Customer data",
+														type = "br.com.brasilprev.rest.dto.CustomerRequest",
+														required = true) @Valid @RequestBody CustomerRequest newCustomer) {
+		Customer toSave = this.customerMapper.customerRequestToCustomerEntity(newCustomer);
+		Customer saved = this.customerFacade.save(toSave);
+		CustomerResponse toReturn = this.customerMapper.customerEntityToCustomerResponse(saved);
+		toReturn.add(linkTo(methodOn(CustomerController.class).doGetCustomer(toReturn.getId())).withSelfRel());
+		return toReturn;
 	}
 }
