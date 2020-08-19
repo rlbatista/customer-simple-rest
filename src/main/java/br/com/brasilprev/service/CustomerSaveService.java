@@ -1,5 +1,7 @@
 package br.com.brasilprev.service;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,12 @@ public class CustomerSaveService {
 	
 	@Transactional
 	public Customer save(Customer newCustomer) {
+		Objects.requireNonNull(newCustomer, "New customers can't be null");
+		
+		if(newCustomer.getCpf() != null) {
+			newCustomer.setCpf(newCustomer.getCpf().replaceAll("\\D", ""));
+		}
+		
 		return this.customerRepo.save(newCustomer);
 	}
 }

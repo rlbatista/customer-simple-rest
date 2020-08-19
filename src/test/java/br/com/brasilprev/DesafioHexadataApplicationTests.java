@@ -49,6 +49,27 @@ class DesafioHexadataApplicationTests {
 		Assertions.assertEquals(SEQUENCE_START_VALUE, newCustomer.getId(), "Sequence is wrong");
 	}
 	
+	@Test
+	void whenSaveInvalidCustomer_ThenThrowsException() {
+		Customer invalidCustomer = this.createCustomer();
+		invalidCustomer.setCpf("123456789012");
+		
+		Assertions.assertThrows(Exception.class, () -> {
+			this.customerFacade.save(invalidCustomer);
+		}, "Method can saves invalid customer");
+	}
+	
+	@Test
+	void whenSaveCustomerWithFormattedCPFButValid_RemoveCharsThenOk() {
+		Customer newCustomer = this.createCustomer();
+		newCustomer.setCpf("603.417.400-71");
+		newCustomer = this.customerFacade.save(newCustomer);
+		Assertions.assertNotNull(newCustomer.getId(), "New customer wasn't save");
+		
+		Customer savedCustomer = this.customerFacade.getById(newCustomer.getId()).get();
+		Assertions.assertEquals("60341740071", savedCustomer.getCpf(), "New customer with formatted CPF wasn't save");
+	}
+	
 	private Customer createCustomer() {
 		return
 			Customer
